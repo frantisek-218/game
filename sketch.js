@@ -1,20 +1,22 @@
+
 let snake;
 let food;
-let fotka;
 let num;
 let frame = 0;
 let pom;
 let gad;
-let foodImage,gadImage,snakeImage;
+let foodImage,gadImage,snakeImage,backgroundImage,packImage;
 let time = 0
 
 function preload(){
-  foodImage = loadImage("img/img.png.png");
-  gadImage = loadImage("img/modry.png");
+  backgroundImage = loadImage("img/bgrnd.jpg")
+  foodImage = loadImage("img/png.png");
+  gadImage = loadImage("img/0.png");
+  packImage = loadImage("img/pacman.png");
 }
 
 window.onload = function(){
-  setInterval(mainLoop,1000/500);
+  setInterval(mainLoop,1000/60);
 }
 function mainLoop(){
   
@@ -24,8 +26,8 @@ class Snake{
   constructor(){
     this.x = width/2
     this.y = height/2
-    this.w = 50
-    this.h = 50
+    this.w = 70
+    this.h = 70
   }
   move() {
     if (keyIsDown(LEFT_ARROW)) {
@@ -43,9 +45,10 @@ class Snake{
   }
   draw(){
     this.move();
-    let c = color('magenta');
+    let c = color('yellow');
     fill(c);
-    rect(this.x,this.y,this.w,this.h)
+    //rect(this.x,this.y,this.w,this.h)
+    image(packImage,this.x,this.y,this.w,this.h)
   }
 }
 class Food{
@@ -53,13 +56,13 @@ class Food{
     this.x =  30
     this.y = random(0,700)
     this.w = 70
-    this.h = 47
+    this.h = 70
   }
   move(){
-this.x += 5;
+this.x += 10;
   if(this.x>width){
-    this.x= 0 -this.w;
-    this.y= Math.floor(Math.random() * 700);
+    this.x= 0;
+    this.y= Math.floor(Math.random() * (700-this.h));
   }
   }
   draw(){
@@ -80,7 +83,7 @@ class Gad{
   move(){
 this.y += 10
   if(this.y>height){
-    this.x= Math.floor(Math.random() * 700);
+    this.x= Math.floor(Math.random() * (700-this.h));
     this.y= 0 -this.h;
   }
   }
@@ -101,11 +104,12 @@ function setup() {
 
 function draw() {
   time++;
-  background(255);
+  background(255)
+  image(backgroundImage,0,0,width,height)
   snake.draw();
   food.draw();
-  //if(time>=1000){
+  if(time>=1000){
     gad.draw();
-  //}
+  }
   text(`Score: ${time}`,width-100, height-670);
 }
