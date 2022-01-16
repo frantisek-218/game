@@ -3,10 +3,12 @@ let snake;
 let food;
 let health = 100;
 let num;
+let speed = 10;
 let frame = 0;
 let pom;
 let gad;
-let foodImage,gadImage,snakeImage,backgroundImage,packImage,endImage;
+let coin;
+let foodImage,gadImage,snakeImage,backgroundImage,packImage,endImage,coinImage;
 let time = 0
 let hit = false
 
@@ -16,6 +18,7 @@ function preload(){
   gadImage = loadImage("img/0.png");
   packImage = loadImage("img/pacman.png");
   endImage = loadImage("img/letsgoo.png")
+  coinImage = loadImage("img/jidlo.png")
 }
 
 window.onload = function(){
@@ -87,7 +90,7 @@ class Food{
     this.h = 70
   }
   move(){
-this.x += 10;
+this.x += speed;
   if(this.x>width){
     this.x= 0;
     this.y= Math.floor(Math.random() * (700-this.h));
@@ -122,7 +125,7 @@ class Gad{
     this.h = 70
   }
   move(){
-this.y += 10
+this.y += speed
   if(this.y>height){
     this.x= Math.floor(Math.random() * (700-this.h));
     this.y= 0 -this.h;
@@ -148,12 +151,24 @@ this.y += 10
     image(foodImage,this.x,this.y,this.w,this.h)
   }
 }
+/*class Coin{
+  constructor(){
+    this.x = random(0,width-this.w)
+    this.y = random(0,height-this.h)
+    this.w = 30
+    this.h = 30
+  }
+  draw(){
+    image(coinImage,this.x,this.y,this.w,this.h)
+  }
+}*/
 
 function setup() {
   createCanvas(700, 700);
   snake = new Snake();
   food = new Food();
   gad = new Gad(); 
+  //coin = new Coin();
 }
 
 function draw() {
@@ -162,8 +177,18 @@ function draw() {
   image(backgroundImage,0,0,width,height)
   snake.draw();
   food.draw();
+  //coin.draw();
   if(time>=500){
     gad.draw();
+  }
+   if(time>=1500){
+    speed = 12;
+  }
+  if(time>=3000){
+    speed = 15
+  }
+  if(time>=5000){
+    speed = 20
   }
   if (snake.hits(food)||snake.hit(gad)){
     //console.log("game over")
@@ -173,7 +198,10 @@ function draw() {
       console.log("game over")
       background(255)
       image(endImage,width/2-180,height/2-180,width/2,height/2)
-      text(`Your score: ${time}`,width/2-50,height-250);
+      textSize(25)
+      fill("red")
+      textStyle(BOLD);
+      text(`Your score: ${time}`,width/2-100,height-250);
       noLoop();
     }
   }
@@ -185,7 +213,10 @@ function draw() {
   /*if (health = 0){
     console.log("this game is over")
   }*/
-text(`Score: ${time}`,width-100,height-670);
-  text(`HP: ${health}`,width-200, height-670);
+  textSize(20);
+  fill(255)
+text(`Score: ${time}`,width-125,height-670);
+  text(`HP: ${health}`,width-250, height-670);
+  text(`Speed: ${speed}`,width-400,height-670);
   
 }

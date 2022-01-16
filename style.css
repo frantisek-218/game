@@ -1,9 +1,13 @@
 html, body {
   margin: 0;
   padding: 0;
+  background-image: url("img/image.jpg");
+  background-size: cover;
 }
 canvas {
-  display: block;
-  border: 2px solid black;
-  text-align:text-center;
+  left: 50% !important;
+  right: 50% !important;
+  transform: translate(-50%,10%);
+  position: absolute;
+  border: 2px solid blue;
 }
