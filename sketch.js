@@ -12,6 +12,8 @@ let foodImage,gadImage,snakeImage,backgroundImage,packImage,endImage,coinImage;
 let time = 0
 let hit = false
 
+
+//nachystani obrazku k vykresleni 
 function preload(){
   backgroundImage = loadImage("img/bgrnd.jpg")
   foodImage = loadImage("img/png.png");
@@ -21,20 +23,28 @@ function preload(){
   coinImage = loadImage("img/jidlo.png")
 }
 
+//nastaveni vykreslovaci frekvence
 window.onload = function(){
   setInterval(mainLoop,1000/60);
 }
+
+
 function mainLoop(){
   
 }
 
+// main - charakter
 class Snake{
+
+// constructor k nastaveni informaci k mainchar.
   constructor(){
     this.x = width/2
     this.y = height/2
     this.w = 70
     this.h = 70
   }
+  
+//funkce umožnění pohybu
   move() {
     if (keyIsDown(LEFT_ARROW)) {
       if (this.x > 0) this.x -= 7;
@@ -50,6 +60,7 @@ class Snake{
     }
   }
   
+  //funkce z knihovny collide
    hits(food) {
     return collideRectRect(
       this.x,
@@ -74,6 +85,8 @@ class Snake{
       gad.w,
     );
   }
+  
+  //vykresleni vsech prednastavenych inf.
   draw(){
     this.move();
     let c = color('yellow');
@@ -82,6 +95,8 @@ class Snake{
     image(packImage,this.x,this.y,this.w,this.h)
   }
 }
+
+//bot - 1
 class Food{
   constructor(){
     this.x =  30
@@ -89,6 +104,8 @@ class Food{
     this.w = 70
     this.h = 70
   }
+  
+  //pohyb bota - nastaveni jeho x po překrocení na 0
   move(){
 this.x += speed;
   if(this.x>width){
@@ -96,6 +113,8 @@ this.x += speed;
     this.y= Math.floor(Math.random() * (700-this.h));
   }
   }
+  
+  
     hits(snake) {
     return collideRectRect(
       this.x,
@@ -108,6 +127,8 @@ this.x += speed;
       Snake.h
     );
   }
+  
+  
   draw(){
     this.move()
     this.hits()
@@ -117,6 +138,8 @@ this.x += speed;
     
   }
 }
+
+//bot - 2
 class Gad{
   constructor(){
     this.x =  random(0,width-this.w)
@@ -124,13 +147,17 @@ class Gad{
     this.w = 70
     this.h = 70
   }
+  
+  // pohyb po ose y po prekroceni na y=0
   move(){
-this.y += speed
-  if(this.y>height){
+    this.y += speed
+    if(this.y>height){
     this.x= Math.floor(Math.random() * (700-this.h));
     this.y= 0 -this.h;
   }
   }
+  
+  
    hits(snake) {
     return collideRectRect(
       this.x,
@@ -143,6 +170,8 @@ this.y += speed
       Snake.h
     );
   }
+  
+  
   draw(){
     this.move()
     this.hits()
@@ -151,6 +180,7 @@ this.y += speed
     image(foodImage,this.x,this.y,this.w,this.h)
   }
 }
+//nedodělana coin - sběr
 /*class Coin{
   constructor(){
     this.x = random(0,width-this.w)
@@ -163,6 +193,8 @@ this.y += speed
   }
 }*/
 
+
+
 function setup() {
   createCanvas(700, 700);
   snake = new Snake();
@@ -171,6 +203,7 @@ function setup() {
   //coin = new Coin();
 }
 
+
 function draw() {
   time++;
   background(255)
@@ -178,22 +211,30 @@ function draw() {
   snake.draw();
   food.draw();
   //coin.draw();
+  
+  
+  //char. hry - kdy se co stane + průběžná náročnost
   if(time>=500){
     gad.draw();
   }
+  
    if(time>=1500){
     speed = 12;
   }
+  
   if(time>=3000){
     speed = 15
   }
+  
   if(time>=5000){
     speed = 20
   }
+  // nastavime co se stane, když se mainchar. střetne s botem
   if (snake.hits(food)||snake.hit(gad)){
     //console.log("game over")
    health-= 1
     loop()
+    //ukončení hry + vypis score a end screenu - po hře
     if(health<=0){
       console.log("game over")
       background(255)
@@ -206,16 +247,10 @@ function draw() {
     }
   }
 
-  //}/*if (snake.hit(gad)){
-    //console.log("game over2")
-    
- // }*/
-  /*if (health = 0){
-    console.log("this game is over")
-  }*/
+  //vypis ve hře + score - během hry
   textSize(20);
   fill(255)
-text(`Score: ${time}`,width-125,height-670);
+  text(`Score: ${time}`,width-125,height-670);
   text(`HP: ${health}`,width-250, height-670);
   text(`Speed: ${speed}`,width-400,height-670);
   
